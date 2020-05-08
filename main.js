@@ -1,5 +1,4 @@
-//const baseDate = ["24.08.1001", "Tuesday"];
-const baseDate = ["24.08.1", "Tuesday"];
+const baseFullDate = ["24.08.1", "Tuesday"];
 
 const parseDate = (date) => {
     const dateArray = date.split('.');
@@ -14,7 +13,7 @@ var sendButton = document.getElementById('sendButton');
 
 sendButton.onclick = function () {
     let val = document.getElementById('enterYear').value;
-    const parseBaseDate = parseDate(baseDate[0]);
+    const parseBaseDate = parseDate(baseFullDate[0]);
     const parseEnterValue = parseDate(val);
 
     if (parseEnterValue.length === 3) {
@@ -62,6 +61,14 @@ const findTheDayOfTheWeekOnChronos = (baseDate, targetDate) => {
     const countOfLeapDays = 361;
     const countOfNormalDays = 360;
 
+    const baseDateDay = baseFullDate[1];
+    let baseDateDayIndex = 0;
+    for (let i = 0; i < daysOfTheWeek.length; i++) {
+        if (baseDateDay === daysOfTheWeek[i]) {
+            baseDateDayIndex = i;
+        }
+    };
+    console.log(baseDateDayIndex)
     let countOfYearsPassed = baseDate[2] - targetDate[2];
     const a = -1
     if (countOfYearsPassed < 0) { countOfYearsPassed = countOfYearsPassed * a }
@@ -70,39 +77,21 @@ const findTheDayOfTheWeekOnChronos = (baseDate, targetDate) => {
 
     const countOfNormalYears = countOfYearsPassed - countOfLeapYears;
     const countOfDaysInTheCurrentYear = (targetDate[1] * 30) + targetDate[0];
+    const countOfDaysInTheBaseYear = (baseDate[1] * 30) + baseDate[0];
 
-    const sumOfDaysAfterBaseDate = (countOfLeapYears * countOfLeapDays) + (countOfNormalYears * countOfNormalDays) + countOfDaysInTheCurrentYear + 3;
+    const sumOfDaysAfterBaseDate = (countOfLeapYears * countOfLeapDays) + (countOfNormalYears * countOfNormalDays) + (countOfDaysInTheCurrentYear - countOfDaysInTheBaseYear);
     const targetDateOfTheWeek = (sumOfDaysAfterBaseDate % 7);
 
-    let dayOfTheWeek = "";
-    switch (targetDateOfTheWeek) {
-        case 0:
-            dayOfTheWeek = "Monday";
-            break;
-        case 1:
-            dayOfTheWeek = "Tuesday";
-            break;
-        case 2:
-            dayOfTheWeek = "Wednesday";
-            break;
-        case 3:
-            dayOfTheWeek = "Thursday";
-            break;
-        case 4:
-            dayOfTheWeek = "Friday";
-            break;
-        case 5:
-            dayOfTheWeek = "Saturday";
-            break;
-        case 6:
-            dayOfTheWeek = "Sunday";
-            break;
 
-        default:
-            console.log(targetDateOfTheWeek);
-            console.log("something wrong..");
-            break;
+    const dayOfTheWeekIndex = baseDateDayIndex + targetDateOfTheWeek;
+    let needIndex = null;
+    let trueDayOfTheWeek = null;
+    if (dayOfTheWeekIndex >= daysOfTheWeek.length) {
+        needIndex = dayOfTheWeekIndex - daysOfTheWeek.length;
+        trueDayOfTheWeek = daysOfTheWeek[needIndex];
     }
-
-    return dayOfTheWeek;
+    else {
+        trueDayOfTheWeek = daysOfTheWeek[dayOfTheWeekIndex];
+    }
+    return trueDayOfTheWeek;
 }
