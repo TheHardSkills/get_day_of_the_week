@@ -18,9 +18,12 @@ sendButton.onclick = function () {
     const parseEnterValue = parseDate(val);
 
     if (parseEnterValue.length === 3) {
-        document.getElementById('str').innerHTML = "Day of the week: " + findTheDayOfTheWeekOnChronos(parseBaseDate, parseEnterValue);
-    }
-    else alert("Input Error");
+        if (parseEnterValue[0] > 0 && parseEnterValue[0] <= 30) {
+            if (parseEnterValue[1] > 0 && parseEnterValue[1] <= 12) {
+                document.getElementById('str').innerHTML = "Day of the week: " + findTheDayOfTheWeekOnChronos(parseBaseDate, parseEnterValue);
+            } else alert("Input Error");
+        } else alert("Input Error");
+    } else alert("Input Error");
 
 };
 
